@@ -38,3 +38,11 @@ mongoose.connect(process.env.MONGODB_URI)
   .catch((err) => {
     console.error('Failed to connect to MongoDB', err);
   });
+
+
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "TaskFlow Backend Running Successfully 🚀"
+  });
+});
