@@ -6,14 +6,14 @@ const sendOTP = async (email, otp) => {
     // For development, we can use a service like ethereal.email or a real SMTP if provided
     console.log('Using SMTP Host:', process.env.EMAIL_HOST, 'on Port:', process.env.EMAIL_PORT); // Debug log
     let transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
-      secure: process.env.EMAIL_PORT == 465, // true for 465, false for other ports
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
+  host: process.env.EMAIL_HOST,
+  port: Number(process.env.EMAIL_PORT),
+  secure: false, // IMPORTANT for port 587
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
 
     const mailOptions = {
       from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
@@ -24,7 +24,8 @@ const sendOTP = async (email, otp) => {
              <p>Your OTP for email verification is: <strong>${otp}</strong></p>
              <p>It is valid for 10 minutes.</p>`
     };
-
+    await transporter.verify();
+console.log("SMTP Connected Successfully") ;
     await transporter.sendMail(mailOptions);
     // console.log('OTP Email sent to', email);
   } catch (error) {
