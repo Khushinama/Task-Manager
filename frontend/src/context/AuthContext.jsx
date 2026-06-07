@@ -34,10 +34,7 @@ export const AuthProvider = ({ children }) => {
       toast.success('Logged in successfully!', { id: toastId });
       return true;
     } catch (error) {
-      if (error.response?.status === 403) {
-         toast.error('Please verify your email first!', { id: toastId });
-         return { requiresVerification: true };
-      }
+
       toast.error(error.response?.data?.message || 'Login failed', { id: toastId });
       return false;
     }
@@ -46,8 +43,8 @@ export const AuthProvider = ({ children }) => {
   const register = async (name, email, password) => {
     const toastId = toast.loading('Creating account...');
     try {
-      await api.post('/auth/register', { name, email, password });
-      toast.success('Registration successful. Please check your email for OTP.', { id: toastId });
+      const res = await api.post('/auth/register', { name, email, password });
+      toast.success('Registration successful. Please log in.', { id: toastId });
       return true;
     } catch (error) {
       toast.error(error.response?.data?.message || 'Registration failed', { id: toastId });
@@ -55,17 +52,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const verifyEmail = async (email, otp) => {
-    const toastId = toast.loading('Verifying OTP...');
-    try {
-      const res = await api.post('/auth/verify-email', { email, otp });
-      toast.success('Email verified successfully! Please log in.', { id: toastId });
-      return true;
-    } catch (error) {
-      toast.error(error.response?.data?.message || 'Verification failed', { id: toastId });
-      return false;
-    }
-  };
 
   const logout = () => {
     localStorage.removeItem('token');
@@ -74,7 +60,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, verifyEmail, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
       {!loading && children}
     </AuthContext.Provider>
   );

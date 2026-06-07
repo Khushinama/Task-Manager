@@ -64,7 +64,7 @@ const Register = () => {
 
     const success = await register(name, email, password);
     if (success) {
-      navigate('/verify-email', { state: { email } });
+      navigate('/login');
     }
   };
 

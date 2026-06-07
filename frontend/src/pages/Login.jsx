@@ -55,8 +55,6 @@ const Login = () => {
     const result = await login(email, password);
     if (result === true) {
       navigate('/dashboard');
-    } else if (result?.requiresVerification) {
-      navigate('/verify-email', { state: { email } });
     }
   };
 

@@ -4,7 +4,6 @@ import { useContext } from 'react';
 import { AuthContext } from './context/AuthContext';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import VerifyEmail from './pages/VerifyEmail';
 import Dashboard from './pages/Dashboard';
 import Navbar from './components/Navbar';
 
@@ -26,10 +25,7 @@ function App() {
             path="/register" 
             element={!user ? <Register /> : <Navigate to="/dashboard" />} 
           />
-          <Route 
-            path="/verify-email" 
-            element={!user ? <VerifyEmail /> : <Navigate to="/dashboard" />} 
-          />
+
           <Route 
             path="/dashboard" 
             element={user ? <Dashboard /> : <Navigate to="/login" />} 
